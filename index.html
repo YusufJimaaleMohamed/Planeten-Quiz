@@ -12,26 +12,95 @@
 
 <main class="page">
 
-  <section class="intro">
-    <h1>Planeten Quiz</h1>
-    <p>Test je kennis over planeten en ons zonnestelsel.</p>
-  </section>
-
   <section class="quiz-card">
+    <h1>Planeten Quiz</h1>
+    <p class="intro-text">Beantwoord alle vragen en controleer daarna je score.</p>
 
-    <div class="quiz-top">
-      <span id="questionNumber">Vraag 1 van 10</span>
-      <span id="score">Score: 0</span>
-    </div>
+    <form id="quizForm">
 
-    <h2 id="question">Vraag komt hier...</h2>
+      <div class="question">
+        <h3>1. Welke planeet staat het dichtst bij de zon?</h3>
+        <label><input type="radio" name="q1" value="Mercurius"> Mercurius</label>
+        <label><input type="radio" name="q1" value="Venus"> Venus</label>
+        <label><input type="radio" name="q1" value="Aarde"> Aarde</label>
+        <label><input type="radio" name="q1" value="Mars"> Mars</label>
+      </div>
 
-    <div id="answers" class="answers"></div>
+      <div class="question">
+        <h3>2. Welke planeet wordt de Rode Planeet genoemd?</h3>
+        <label><input type="radio" name="q2" value="Jupiter"> Jupiter</label>
+        <label><input type="radio" name="q2" value="Mars"> Mars</label>
+        <label><input type="radio" name="q2" value="Venus"> Venus</label>
+        <label><input type="radio" name="q2" value="Saturnus"> Saturnus</label>
+      </div>
 
-    <button id="nextBtn" class="next-btn">Volgende vraag</button>
+      <div class="question">
+        <h3>3. Welke planeet heeft de bekendste ringen?</h3>
+        <label><input type="radio" name="q3" value="Saturnus"> Saturnus</label>
+        <label><input type="radio" name="q3" value="Mars"> Mars</label>
+        <label><input type="radio" name="q3" value="Venus"> Venus</label>
+        <label><input type="radio" name="q3" value="Neptunus"> Neptunus</label>
+      </div>
 
-    <div id="result" class="result"></div>
+      <div class="question">
+        <h3>4. Welke planeet is het grootst in ons zonnestelsel?</h3>
+        <label><input type="radio" name="q4" value="Jupiter"> Jupiter</label>
+        <label><input type="radio" name="q4" value="Saturnus"> Saturnus</label>
+        <label><input type="radio" name="q4" value="Aarde"> Aarde</label>
+        <label><input type="radio" name="q4" value="Uranus"> Uranus</label>
+      </div>
 
+      <div class="question">
+        <h3>5. Op welke planeet leven wij?</h3>
+        <label><input type="radio" name="q5" value="Mars"> Mars</label>
+        <label><input type="radio" name="q5" value="Aarde"> Aarde</label>
+        <label><input type="radio" name="q5" value="Venus"> Venus</label>
+        <label><input type="radio" name="q5" value="Mercurius"> Mercurius</label>
+      </div>
+
+      <div class="question">
+        <h3>6. Welke planeet staat bekend als de ochtend- en avondster?</h3>
+        <label><input type="radio" name="q6" value="Venus"> Venus</label>
+        <label><input type="radio" name="q6" value="Mercurius"> Mercurius</label>
+        <label><input type="radio" name="q6" value="Mars"> Mars</label>
+        <label><input type="radio" name="q6" value="Jupiter"> Jupiter</label>
+      </div>
+
+      <div class="question">
+        <h3>7. Welke planeet ligt het verst van de zon?</h3>
+        <label><input type="radio" name="q7" value="Uranus"> Uranus</label>
+        <label><input type="radio" name="q7" value="Neptunus"> Neptunus</label>
+        <label><input type="radio" name="q7" value="Saturnus"> Saturnus</label>
+        <label><input type="radio" name="q7" value="Jupiter"> Jupiter</label>
+      </div>
+
+      <div class="question">
+        <h3>8. Welke planeet heeft de meeste manen?</h3>
+        <label><input type="radio" name="q8" value="Jupiter"> Jupiter</label>
+        <label><input type="radio" name="q8" value="Mars"> Mars</label>
+        <label><input type="radio" name="q8" value="Venus"> Venus</label>
+        <label><input type="radio" name="q8" value="Mercurius"> Mercurius</label>
+      </div>
+
+      <div class="question">
+        <h3>9. Welke planeet wordt een gasreus genoemd?</h3>
+        <label><input type="radio" name="q9" value="Jupiter"> Jupiter</label>
+        <label><input type="radio" name="q9" value="Mars"> Mars</label>
+        <label><input type="radio" name="q9" value="Aarde"> Aarde</label>
+        <label><input type="radio" name="q9" value="Mercurius"> Mercurius</label>
+      </div>
+
+      <div class="question">
+        <h3>10. Hoeveel planeten heeft ons zonnestelsel?</h3>
+        <label><input type="radio" name="q10" value="7"> 7</label>
+        <label><input type="radio" name="q10" value="8"> 8</label>
+        <label><input type="radio" name="q10" value="9"> 9</label>
+        <label><input type="radio" name="q10" value="10"> 10</label>
+      </div>
+      <button type="submit" class="check-btn">Controleer antwoorden</button>
+    </form>
+
+    <div id="result"></div>
   </section>
 
 </main>
