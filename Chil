@@ -1,1 +1,247 @@
 
+Controller 
+<?php
+
+namespace App\Controller;
+
+use App\Entity\Animal;
+use App\Repository\AnimalRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+
+class AnimalController extends AbstractController
+{
+    #[Route('/animals', name: 'animal_overview', methods: ['GET'])]
+    public function index(AnimalRepository $animalRepository): Response
+    {
+        return $this->render('animal/index.html.twig', [
+            'animals' => $animalRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/animal/{id}', name: 'animal_detail', methods: ['GET'])]
+    public function detail(
+        Animal $animal
+    ): Response {
+        return $this->render('animal/detail.html.twig', [
+            'animal' => $animal,
+        ]);
+    }
+
+    #[Route('/animal/add', name: 'animal_add', methods: ['GET', 'POST'])]
+    public function add(
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): Response {
+        $animal = new Animal();
+
+        if ($request->isMethod('POST')) {
+            $animal->setName($request->request->get('name'));
+            $animal->setImage($request->request->get('image'));
+            $animal->setPrice((float) $request->request->get('price'));
+            $animal->setSpecies($request->request->get('species'));
+            $animal->setDescription($request->request->get('description'));
+
+            $entityManager->persist($animal);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('animal_overview');
+        }
+
+        return $this->render('animal/form.html.twig', [
+            'animal' => $animal,
+            'title' => 'Dier toevoegen',
+        ]);
+    }
+
+    #[Route('/animal/update/{id}', name: 'animal_update', methods: ['GET', 'POST'])]
+    public function update(
+        Animal $animal,
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): Response {
+        if ($request->isMethod('POST')) {
+            $animal->setName($request->request->get('name'));
+            $animal->setImage($request->request->get('image'));
+            $animal->setPrice((float) $request->request->get('price'));
+            $animal->setSpecies($request->request->get('species'));
+            $animal->setDescription($request->request->get('description'));
+
+            $entityManager->flush();
+
+            return $this->redirectToRoute('animal_overview');
+        }
+
+        return $this->render('animal/form.html.twig', [
+            'animal' => $animal,
+            'title' => 'Dier bijwerken',
+        ]);
+    }
+
+    #[Route('/animal/delete/{id}', name: 'animal_delete', methods: ['POST'])]
+    public function delete(
+        Animal $animal,
+        EntityManagerInterface $entityManager
+    ): Response {
+        $entityManager->remove($animal);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('animal_overview');
+    }
+}
+Dierenoverzixht. 
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1>Dierenoverzicht</h1>
+
+        <a href="{{ path('animal_add') }}" class="btn btn-success mb-4">
+            Dier toevoegen
+        </a>
+
+        <div class="row">
+            {% for animal in animals %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <img src="{{ asset(animal.image) }}"
+                             class="card-img-top"
+                             alt="{{ animal.name }}"
+                             style="height: 220px; object-fit: cover;">
+
+                        <div class="card-body">
+                            <h5>{{ animal.species }} - {{ animal.name }}</h5>
+                            <p>€{{ animal.price|number_format(2, ',', '.') }}</p>
+
+                            <a href="{{ path('animal_detail', {'id': animal.id}) }}"
+                               class="btn btn-primary mb-2">
+                                Meer info
+                            </a>
+
+                            <a href="{{ path('animal_update', {'id': animal.id}) }}"
+                               class="btn btn-warning mb-2">
+                                Bijwerken
+                            </a>
+
+                            <form action="{{ path('animal_delete', {'id': animal.id}) }}"
+                                  method="POST"
+                                  onsubmit="return confirm('Weet je zeker dat je dit dier wilt verwijderen?');">
+                                <button type="submit" class="btn btn-danger">
+                                    Verwijderen
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p>Er zijn nog geen dieren.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+Details pagina 
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="card" style="max-width: 600px;">
+            <img src="{{ asset(animal.image) }}"
+                 class="card-img-top"
+                 alt="{{ animal.name }}">
+
+            <div class="card-body">
+                <h1>{{ animal.species }} - {{ animal.name }}</h1>
+
+                <p>{{ animal.description }}</p>
+
+                <h4>€{{ animal.price|number_format(2, ',', '.') }}</h4>
+
+                <a href="{{ path('animal_overview') }}"
+                   class="btn btn-secondary">
+                    Terug
+                </a>
+
+                <a href="{{ path('animal_update', {'id': animal.id}) }}"
+                   class="btn btn-warning">
+                    Bijwerken
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+Toeveogejn een between 
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1>{{ title }}</h1>
+
+        <form method="POST">
+            <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input type="text"
+                       id="name"
+                       name="name"
+                       class="form-control"
+                       value="{{ animal.name|default('') }}"
+                       required>
+            </div>
+
+            <div class="mb-3">
+                <label for="image" class="form-label">Image</label>
+                <input type="text"
+                       id="image"
+                       name="image"
+                       class="form-control"
+                       value="{{ animal.image|default('') }}"
+                       required>
+            </div>
+
+            <div class="mb-3">
+                <label for="price" class="form-label">Price</label>
+                <input type="number"
+                       id="price"
+                       name="price"
+                       class="form-control"
+                       step="0.01"
+                       min="0"
+                       value="{{ animal.price|default('') }}"
+                       required>
+            </div>
+
+            <div class="mb-3">
+                <label for="species" class="form-label">Species</label>
+                <input type="text"
+                       id="species"
+                       name="species"
+                       class="form-control"
+                       value="{{ animal.species|default('') }}"
+                       required>
+            </div>
+
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea id="description"
+                          name="description"
+                          class="form-control"
+                          required>{{ animal.description|default('') }}</textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                Save
+            </button>
+
+            <a href="{{ path('animal_overview') }}"
+               class="btn btn-secondary">
+                Annuleren
+            </a>
+        </form>
+    </div>
+{% endblock %}
+Controller. 
+php bin/console lint:twig templates/
+php bin/console debug:router
+symfony server:start
